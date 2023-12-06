@@ -1,18 +1,30 @@
 package com.manong.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
 import java.time.LocalDateTime;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Collection;
+import java.util.List;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
+/**
+ * <p>
+ *
+ * </p>
+ *
+ * @author kimeray
+ * @since 2023-12-03
+ */
 @Data
+@EqualsAndHashCode(callSuper = false)
 @TableName("sys_user")
 public class User implements Serializable, UserDetails {
 
@@ -21,7 +33,7 @@ public class User implements Serializable, UserDetails {
     /**
      * 用户编号
      */
-      @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
@@ -53,6 +65,7 @@ public class User implements Serializable, UserDetails {
      * 帐户是否可用(1-可用，0-禁用)
      */
     private boolean isEnabled = true;
+
     /**
      * 真实姓名
      */
@@ -101,17 +114,18 @@ public class User implements Serializable, UserDetails {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private LocalDateTime createTime;
 
     /**
      * 修改时间
      */
-    private Date updateTime;
+    private LocalDateTime updateTime;
 
     /**
      * 是否删除(0-未删除，1-已删除)
      */
     private Integer isDelete;
+
 
     /**
      * 权限列表
@@ -123,5 +137,4 @@ public class User implements Serializable, UserDetails {
      */
     @TableField(exist = false)
     private List<Permission> permissionList;
-
 }
