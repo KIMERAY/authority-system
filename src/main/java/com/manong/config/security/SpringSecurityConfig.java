@@ -48,25 +48,23 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-//        登录过程处理
-        http.formLogin()            //表单登录
-                .loginProcessingUrl("/api/user/login")  //登录请求url地址，自定义即可
-                .successHandler(loginSuccessHandler)   //认证成功处理器
-                .failureHandler(loginFailureHandler)   //认证失败处理器
+//登录前进行过滤
+        http.formLogin()
+                .loginProcessingUrl("/api/user/login")
+//　设置登录验证成功或失败后的的跳转地址
+                .successHandler(loginSuccessHandler).failureHandler(loginFailureHandler)
+// 禁用csrf防御机制
+                .and().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //不创建Session;
-                .and()
-                .authorizeRequests()    //设置需要拦截的请求
-                .antMatchers("/api/user/login").permitAll() //登录请求放行（不拦截）
-                .anyRequest().authenticated() //其他一律请求都需要进行身份认证
+                .authorizeRequests()
+                .antMatchers("/api/user/login").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(anonymousAuthenticationHandler) //匿名无权限访问
-                .accessDeniedHandler(customerAccessDeniedHandler) //认证用户无权限访问
-                .and()
-                .cors();    //支持跨域请求
+                .authenticationEntryPoint(anonymousAuthenticationHandler)
+                .accessDeniedHandler(customerAccessDeniedHandler)
+                .and().cors();//开启跨域配置
     }
 
     /**
@@ -76,7 +74,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      * @throws Exception
      */
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception
+    {
         auth.userDetailsService(customerUserDetailsService).passwordEncoder(passwordEncoder());
     }
 }
