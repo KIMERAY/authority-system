@@ -1,6 +1,5 @@
 package com.manong.config.security;
 
-
 import com.manong.config.security.handler.AnonymousAuthenticationHandler;
 import com.manong.config.security.handler.CustomerAccessDeniedHandler;
 import com.manong.config.security.handler.LoginFailureHandler;
@@ -21,7 +20,7 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
-    private CustomerUserDetailsService customerUserDetailsServic;
+    private CustomerUserDetailsService customerUserDetailsService;
     @Resource
     private LoginSuccessHandler loginSuccessHandler;
     @Resource
@@ -78,6 +77,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customerUserDetailsServic).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(customerUserDetailsService).passwordEncoder(passwordEncoder());
     }
 }
