@@ -1,9 +1,11 @@
 package com.manong.config.security;
 
-import com.manong.config.security.handler.AnonymousAuthenticationHandle;
-import com.manong.config.security.handler.CustomerAccessDeniedHandle;
-import com.manong.config.security.handler.LoginFailureHandle;
-import com.manong.config.security.handler.LoginSuccessHandle;
+
+import com.manong.config.security.handler.AnonymousAuthenticationHandler;
+import com.manong.config.security.handler.CustomerAccessDeniedHandler;
+import com.manong.config.security.handler.LoginFailureHandler;
+import com.manong.config.security.handler.LoginSuccessHandler;
+import com.manong.config.security.service.CustomerUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.config.web.servlet.AuthorizeRequestsDsl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.annotation.Resource;
@@ -20,15 +21,15 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
-    private LoginSuccessHandle loginSuccessHandle;
+    private CustomerUserDetailsService customerUserDetailsServic;
     @Resource
-    private LoginFailureHandle loginFailureHandle;
+    private LoginSuccessHandler loginSuccessHandler;
     @Resource
-    private AnonymousAuthenticationHandle anonymousAuthenticationHandle;
+    private LoginFailureHandler loginFailureHandler;
     @Resource
-    private CustomerAccessDeniedHandle customerAccessDeniedHandle;
+    private AnonymousAuthenticationHandler anonymousAuthenticationHandler;
     @Resource
-    private CustomerUserDetailsServic customerUserDetailsServic;
+    private CustomerAccessDeniedHandler customerAccessDeniedHandler;
 
     /**
      * 注入加密类
@@ -51,8 +52,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
 //        登录过程处理
         http.formLogin()            //表单登录
-                .successHandler(loginSuccessHandle)   //认证成功处理器
-                .failureHandler(loginFailureHandle)   //认证失败处理器
+                .loginProcessingUrl("/api/user/login")  //登录请求url地址，自定义即可
+                .successHandler(loginSuccessHandler)   //认证成功处理器
+                .failureHandler(loginFailureHandler)   //认证失败处理器
                 .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) //不创建Session;
@@ -62,8 +64,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated() //其他一律请求都需要进行身份认证
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(anonymousAuthenticationHandle) //匿名无权限访问
-                .accessDeniedHandler(customerAccessDeniedHandle) //认证用户无权限访问
+                .authenticationEntryPoint(anonymousAuthenticationHandler) //匿名无权限访问
+                .accessDeniedHandler(customerAccessDeniedHandler) //认证用户无权限访问
                 .and()
                 .cors();    //支持跨域请求
     }
@@ -74,6 +76,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
      * @param auth
      * @throws Exception
      */
+    @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customerUserDetailsServic).passwordEncoder(passwordEncoder());
     }

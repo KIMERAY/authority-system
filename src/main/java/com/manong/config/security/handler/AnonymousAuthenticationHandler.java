@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
  * 匿名用户访问无权限资源时处理器
  */
 @Component
-public class AnonymousAuthenticationHandle implements AuthenticationEntryPoint {
+public class AnonymousAuthenticationHandler implements AuthenticationEntryPoint {
     /**
      * Commences an authentication scheme.
      * <p>

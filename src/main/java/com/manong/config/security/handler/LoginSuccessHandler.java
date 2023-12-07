@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
  * 登录认证成功处理器类
  */
 @Component
-public class LoginSuccessHandle implements AuthenticationSuccessHandler {
+public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     /**
      * Called when a user has been successfully authenticated.
      *

@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
  * 认证用户访问无权限资源时处理器
  */
 @Component
-public class CustomerAccessDeniedHandle implements AccessDeniedHandler {
+public class CustomerAccessDeniedHandler implements AccessDeniedHandler {
     /**
      * Handles an access denied failure.
      *

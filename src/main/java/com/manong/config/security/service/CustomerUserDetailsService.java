@@ -1,4 +1,4 @@
-package com.manong.config.security;
+package com.manong.config.security.service;
 
 import com.manong.entity.User;
 import com.manong.service.UserService;
@@ -13,7 +13,7 @@ import javax.annotation.Resource;
  * 用户认证处理器类
  */
 @Component
-public class CustomerUserDetailsServic implements UserDetailsService {
+public class CustomerUserDetailsService implements UserDetailsService {
     /**
      * Locates the user based on the username. In the actual implementation, the search
      * may possibly be case sensitive, or case insensitive depending on how the
