@@ -38,7 +38,7 @@ public class CustomerAccessDeniedHandler implements AccessDeniedHandler {
 
 
 //        将结果转换成JSON格式
-        String result = JSON.toJSONString(Result.error().code(ResultCode.NO_AUTH).message("无权限访问，请联系管理员！"), SerializerFeature.DisableCircularReferenceDetect);
+        String result = JSON.toJSONString(Result.error().code(ResultCode.NO_AUTH).message("无权限访问,请联系管理员！"), SerializerFeature.DisableCircularReferenceDetect);
 //        将结果保存到输出中写出
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();

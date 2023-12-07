@@ -38,20 +38,20 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 //        定义变量，保存异常信息
         String message = null;
 //        判断异常类型
-        if (exception instanceof AccountExpiredException) {
-            message = "账户国企，登录失败！";
-        } else if (exception instanceof BadCredentialsException) {
-            message = "用户名或密码错误，登录失败！";
-        } else if (exception instanceof CredentialsExpiredException) {
-            message = "密码过期，登录失败！";
-        } else if (exception instanceof DisabledException) {
-            message = "账户被禁用，登录失败！";
-        } else if (exception instanceof LockedException) {
-            message = "账户被锁，登录失败！";
-        } else if (exception instanceof InternalAuthenticationServiceException) {
-            message = "账户不存在，登陆失败！";
-        } else {
-            message = "登录失败";
+        if(exception instanceof AccountExpiredException){
+            message = "账户过期,登录失败！";
+        }else if(exception instanceof BadCredentialsException){
+            message = "用户名或密码错误,登录失败！";
+        }else if(exception instanceof CredentialsExpiredException){
+            message = "密码过期,登录失败！";
+        }else if(exception instanceof DisabledException){
+            message = "账户被禁用,登录失败！";
+        }else if(exception instanceof LockedException){
+            message = "账户被锁,登录失败！";
+        }else if(exception instanceof InternalAuthenticationServiceException){
+            message = "账户不存在,登录失败！";
+        }else{
+            message = "登录失败！";
         }
 //        将结果转换成JSON格式
         String result = JSON.toJSONString(Result.error().code(ResultCode.ERROR).message(message));
