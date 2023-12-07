@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.manong.entity.User;
 import com.manong.utils.Result;
+import com.manong.utils.ResultCode;
 import org.apache.logging.log4j.message.Message;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
@@ -56,7 +57,7 @@ public class LoginFailureHandle implements AuthenticationFailureHandler {
             message = "登录失败";
         }
 //        将结果转换成JSON格式
-        String result = JSON.toJSONString(Result.error().code(500).message(message));
+        String result = JSON.toJSONString(Result.error().code(ResultCode.ERROR).message(message));
 //        将结果保存到输出中写出
         outputStream.write(result.getBytes(StandardCharsets.UTF_8));
         outputStream.flush();
