@@ -1,5 +1,4 @@
 package com.manong.config.security.handler;
-
 import com.alibaba.fastjson.JSON;
 import com.manong.utils.Result;
 import com.manong.utils.ResultCode;
@@ -7,7 +6,6 @@ import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -21,18 +19,12 @@ import java.nio.charset.StandardCharsets;
  */
 @Component
 public class LoginFailureHandler implements AuthenticationFailureHandler {
-    /**
-     * Called when an authentication attempt fails.
-     *
-     * @param request   the request during which the authentication attempt occurred.
-     * @param response  the response.
-     * @param exception the exception which was thrown to reject the authentication
-     *                  request.
-     */
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request,
+                                        HttpServletResponse response, AuthenticationException exception) throws
+            IOException, ServletException {
 //        设置响应的编码格式
-        response.setContentType("application/json;charset=utf-8");
+        response.setContentType("application/json;charset=UTF-8");
 //        获取输出流
         ServletOutputStream outputStream = response.getOutputStream();
 //        定义变量，保存异常信息
