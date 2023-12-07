@@ -36,7 +36,7 @@ public class CustomerUserDetailsServic implements UserDetailsService {
         User user = userService.findUserByUsername(username);
 //        判断对象是否为空，如果对象为空，则表示登录失败
         if (user == null) {
-            throw new UsernameNotFoundException("用户名错误或密码错误")
+            throw new UsernameNotFoundException("用户名错误或密码错误");
         }
 //        查询成功
         return null;
