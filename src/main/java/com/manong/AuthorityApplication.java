@@ -8,6 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.manong.dao")
 public class AuthorityApplication {
     public static void main(String[] args) {
-        SpringApplication.run(AuthorityApplication.class,args);
+        SpringApplication.run(AuthorityApplication.class, args);
     }
 }
