@@ -1,6 +1,9 @@
 package com.manong.controller;
 
 import com.manong.config.redis.RedisService;
+import com.manong.entity.Permission;
+import com.manong.entity.User;
+import com.manong.entity.UserInfo;
 import com.manong.utils.JwtUtils;
 import com.manong.utils.Result;
 import com.manong.vo.TokenVo;
@@ -9,12 +12,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.ObjectUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/sysUser")
@@ -64,5 +70,34 @@ public class SysUserController {
         TokenVo tokenVo = new TokenVo(expireTime, reToken);
 //返回数据
         return Result.ok(tokenVo).message("token生成成功");
+    }
+
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    @GetMapping("/getInfo")
+    public Result getInfo() {
+//从Spring Security上下文获取用户信息
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+//判断authentication对象是否为空
+        if (authentication == null) {
+            return Result.error().message("用户信息查询失败");
+        }
+//获取用户信息
+        User user = (User) authentication.getPrincipal();
+//用户权限集合
+        List<Permission> permissionList = user.getPermissionList();
+//获取角色权限编码字段
+        Object[] roles = permissionList.stream()
+                .filter(Objects::nonNull)
+                .map(Permission::getCode).toArray();
+//创建用户信息对象
+        UserInfo userInfo = new UserInfo(user.getId(), user.getNickName(),
+                user.getAvatar(), null, roles);
+//返回数据
+        return Result.ok(userInfo).message("用户信息查询成功");
     }
 }
