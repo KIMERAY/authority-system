@@ -5,7 +5,9 @@ import com.manong.entity.Permission;
 import com.manong.entity.User;
 import com.manong.entity.UserInfo;
 import com.manong.utils.JwtUtils;
+import com.manong.utils.MenuTree;
 import com.manong.utils.Result;
+import com.manong.vo.RouterVo;
 import com.manong.vo.TokenVo;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/sysUser")
@@ -99,5 +102,28 @@ public class SysUserController {
                 user.getAvatar(), null, roles);
 //返回数据
         return Result.ok(userInfo).message("用户信息查询成功");
+    }
+
+    /**
+     * 获取菜单数据
+     *
+     * @return
+     */
+    @GetMapping("/getMenuList")
+    public Result getMenuList() {
+//从Spring Security上下文获取用户信息
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//获取用户信息
+        User user = (User) authentication.getPrincipal();
+//获取相应的权限
+        List<Permission> permissionList = user.getPermissionList();
+//筛选目录和菜单
+        List<Permission> collect = permissionList.stream()
+                .filter(item -> item != null && item.getType() != 2)
+                .collect(Collectors.toList());
+//生成路由数据
+        List<RouterVo> routerVoList = MenuTree.makeRouter(collect, 0L);
+//返回数据
+        return Result.ok(routerVoList).message("菜单数据获取成功");
     }
 }
