@@ -154,7 +154,8 @@ public class SysUserController {
             new SecurityContextLogoutHandler().logout(request, response, authentication);
 //            清除Redis缓存中的token
             redisService.del("token_" + token);
+            return Result.ok().message("用户退出成功");
         }
-        return Result.ok().message("用户退出成功");
+            return Result.error().message("用户退出失败");
     }
 }
