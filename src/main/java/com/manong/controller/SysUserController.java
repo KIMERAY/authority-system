@@ -85,8 +85,7 @@ public class SysUserController {
     @GetMapping("/getInfo")
     public Result getInfo() {
 //从Spring Security上下文获取用户信息
-        Authentication authentication =
-                SecurityContextHolder.getContext().getAuthentication();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 //判断authentication对象是否为空
         if (authentication == null) {
             return Result.error().message("用户信息查询失败");
@@ -156,6 +155,6 @@ public class SysUserController {
             redisService.del("token_" + token);
             return Result.ok().message("用户退出成功");
         }
-            return Result.error().message("用户退出失败");
+        return Result.error().message("用户退出失败");
     }
 }
