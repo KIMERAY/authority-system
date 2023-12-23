@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.manong.dao.UserMapper;
 import com.manong.entity.Department;
 import com.manong.dao.DepartmentMapper;
+import com.manong.entity.User;
 import com.manong.service.DepartmentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.manong.utils.DepartmentTree;
@@ -75,7 +76,15 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
      */
     @Override
     public boolean hasChildrenOfDepartment(Long id) {
+//        创建条件构造器对象
+        QueryWrapper<Department> queryWrapper = new QueryWrapper<Department>();
+        queryWrapper.eq("pid", id);
+//        如果数量大于0，表示存在
+        if (baseMapper.selectCount(queryWrapper) > 0) {
+            return true;
+        }
         return false;
+
     }
 
     /**
@@ -86,6 +95,13 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
      */
     @Override
     public boolean hasUserOfDepartment(Long id) {
+//        创建条件构造器对象
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+        queryWrapper.eq("department_id", id);
+//        如果数量大于0，表示存在
+        if (userMapper.selectCount(queryWrapper) > 0) {
+            return true;
+        }
         return false;
     }
 }

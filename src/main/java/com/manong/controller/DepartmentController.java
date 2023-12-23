@@ -81,12 +81,14 @@ public class DepartmentController {
      */
     @GetMapping("/check/{id}")
     public Result check(@PathVariable Long id) {
-//        创建条件构造器对象
-        QueryWrapper<Department> queryWrapper = new QueryWrapper<Department>();
-        queryWrapper.eq("pid", id);
-//        判断数量是否大于0
-        if (departmentService.count(queryWrapper) > 0) {
+//        调用查询部门下是否存在子部门的方法
+        if (departmentService.hasChildrenOfDepartment(id)) {
             return Result.exist().message("该部门下存在子部门，无法删除");
+        }
+//        调用查询部门下是否存在用户的方法
+        if (departmentService.hasUserOfDepartment(id)){
+
+            return Result.exist().message("该部门下存在用户信息，无法删除");
         }
         return Result.ok();
     }

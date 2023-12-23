@@ -1,5 +1,7 @@
 package com.manong.utils;
+
 import lombok.Data;
+
 /**
  * 全局统一返回结果类
  */
@@ -9,28 +11,34 @@ public class Result<T> {
     private Integer code;//状态码
     private String message;//返回消息
     private T data;//返回数据
+
     /**
      * 私有化构造方法，禁止在其它类创建对象
      */
-    private Result(){}
+    private Result() {
+    }
+
     /**
      * 成功执行，不返回数据
+     *
      * @return
      */
-    public static<T> Result<T> ok(){
+    public static <T> Result<T> ok() {
         Result<T> result = new Result<T>();
         result.setSuccess(true);
         result.setCode(ResultCode.SUCCESS);
         result.setMessage("执行成功");
         return result;
     }
+
     /**
      * 成功执行，并返回数据
+     *
      * @param data
      * @param <T>
      * @return
      */
-    public static<T> Result<T> ok(T data){
+    public static <T> Result<T> ok(T data) {
         Result<T> result = new Result<T>();
         result.setSuccess(true);
         result.setCode(ResultCode.SUCCESS);
@@ -38,53 +46,64 @@ public class Result<T> {
         result.setData(data);
         return result;
     }
+
     /**
      * 失败
+     *
      * @return
      */
-    public static<T> Result<T> error(){
+    public static <T> Result<T> error() {
         Result<T> result = new Result<T>();
         result.setSuccess(false);
         result.setCode(ResultCode.ERROR);
         result.setMessage("执行失败");
         return result;
     }
+
     /**
      * 设置是否成功
+     *
      * @param success
      * @return
      */
-    public Result<T> success(Boolean success){
+    public Result<T> success(Boolean success) {
         this.setSuccess(success);
         return this;
     }
+
     /**
      * 设置状态码
+     *
      * @param code
      * @return
      */
-    public Result<T> code(Integer code){
+    public Result<T> code(Integer code) {
         this.setCode(code);
         return this;
     }
+
     /**
      * 设置返回消息
+     *
      * @param message
      * @return
      */
-    public Result<T> message(String message){
+    public Result<T> message(String message) {
         this.setMessage(message);
         return this;
     }
+
     /**
      * 是否存在
+     *
      * @return
      */
-    public static<T> Result<T> exist(){
+    public static <T> Result<T> exist() {
         Result<T> result = new Result<T>();
-        result.setSuccess(true);
-        result.setCode(ResultCode.SUCCESS);
-        result.setMessage("执行成功");
+        result.setSuccess(false);// 存在该数据
+//        由于vue-element-admin模板在响应时验证状态码是否200，如果不是200，则报错
+        result.setCode(ResultCode.SUCCESS);// 执行成功，但存在该数据
+        result.setMessage("该数据存在");
         return result;
     }
 }

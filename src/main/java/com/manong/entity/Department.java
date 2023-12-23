@@ -64,7 +64,7 @@ public class Department implements Serializable {
      */
     @TableField(exist = false)
     private Boolean open;
-    
+
     /**
      * 子部门
      */
