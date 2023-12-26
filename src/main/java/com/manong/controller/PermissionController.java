@@ -34,13 +34,12 @@ public class PermissionController {
     /**
      * 查询上级菜单列表
      *
-     * @param permissionQueryVo
      * @return
      */
-    @GetMapping("/parent/List")
-    public Result getParentList(PermissionQueryVo permissionQueryVo) {
+    @GetMapping("/parent/list")
+    public Result getParentList() {
 //        调用查询上级菜单列表的方法
-        List<Permission> permissionList = permissionService.findPermissionList(permissionQueryVo);
+        List<Permission> permissionList = permissionService.findParentPermissionList();
 //        返回数据
         return Result.ok(permissionList);
     }
