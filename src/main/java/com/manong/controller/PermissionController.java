@@ -95,6 +95,7 @@ public class PermissionController {
      * @param id
      * @return
      */
+    @GetMapping("/check/{id}")
     public Result check(@PathVariable Long id) {
 //        判断菜单是否有子菜单
         if (permissionService.hasChildrenOfPermission(id)) {
