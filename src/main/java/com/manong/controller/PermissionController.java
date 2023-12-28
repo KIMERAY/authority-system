@@ -80,7 +80,7 @@ public class PermissionController {
      * @param id
      * @return
      */
-    @PostMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
 //        调用删除的方法
         if (permissionService.removeById(id)) {
