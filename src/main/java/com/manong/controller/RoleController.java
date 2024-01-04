@@ -66,7 +66,7 @@ public class RoleController {
      * @param id
      * @return
      */
-    @DeleteMapping("/delete/{ijd}")
+    @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
 
 //        调用删除的方法
