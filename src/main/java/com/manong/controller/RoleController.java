@@ -3,9 +3,12 @@ package com.manong.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.manong.entity.Role;
+import com.manong.service.PermissionService;
 import com.manong.service.RoleService;
 import com.manong.utils.Result;
+import com.manong.vo.RolePermissionVo;
 import com.manong.vo.query.RoleQueryVo;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,6 +19,9 @@ import javax.annotation.Resource;
 public class RoleController {
     @Resource
     private RoleService roleService;
+
+    @Resource
+    private PermissionService permissionService;
 
     @GetMapping("/list")
     public Result list(RoleQueryVo roleQueryVo) {
@@ -89,6 +95,21 @@ public class RoleController {
             return Result.exist().message("该角色已分配给其他用户使用，无法删除");
         }
         return Result.ok();
+    }
+
+    /**
+     * 分配权限-查询权限树数据
+     *
+     * @param userId
+     * @param RoleId
+     * @return
+     */
+    @GetMapping("/getAssignPermissionTree")
+    public Result getAssignPermissionTree(Long userId, Long RoleId) {
+//        调用查询权限树数据的方法
+        RolePermissionVo permissionTree = permissionService.findPermissTree(userId, RoleId);
+//        返回数据
+        return Result.ok(permissionTree);
     }
 }
 
