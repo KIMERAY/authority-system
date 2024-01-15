@@ -2,6 +2,7 @@ package com.manong.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.manong.dto.RolePermissionDTO;
 import com.manong.entity.Role;
 import com.manong.service.PermissionService;
 import com.manong.service.RoleService;
@@ -110,6 +111,22 @@ public class RoleController {
         RolePermissionVo permissionTree = permissionService.findPermissTree(userId, RoleId);
 //        返回数据
         return Result.ok(permissionTree);
+    }
+
+    /**
+     * 分配权限-保存角色权限数据
+     *
+     * @param rolePermissionDTO
+     * @return
+     */
+    @PostMapping("/saveRoleAssign")
+    public Result saveRoleAssign(@RequestBody RolePermissionDTO rolePermissionDTO) {
+//        调用保存角色权限关系的方法
+
+        if (roleService.saveRolePermission(rolePermissionDTO.getRoleId(), rolePermissionDTO.getList())) {
+            return Result.ok().message("权限分配成功");
+        }
+        return Result.error().message("权限分配失败");
     }
 }
 
