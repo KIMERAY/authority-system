@@ -71,5 +71,25 @@ public class UserController {
         }
         return Result.error().message("用户添加失败");
     }
+    /**
+     * 修改用户
+     *
+     * @param user
+     * @return
+     */
+    @PutMapping("/update")
+    public Result update(@RequestBody User user) {
+//查询用户
+        User item = userService.findUserByUsername(user.getUsername());
+//判断对象是否为空,且查询到的用户ID不等于当前编辑的用户ID，表示该名称被占用
+        if (item != null && item.getId() != user.getId()) {
+            return Result.error().message("该用户名已被占用，请重新输入！");
+        }
+//调用修改用户信息的方法
+        if (userService.updateById(user)) {
+            return Result.ok().message("用户修改成功");
+        }
+        return Result.error().message("用户修改失败");
+    }
 }
 
