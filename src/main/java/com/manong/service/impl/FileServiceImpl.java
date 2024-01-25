@@ -7,6 +7,7 @@ import com.manong.service.FileService;
 import org.apache.commons.io.FilenameUtils;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -15,6 +16,8 @@ import java.io.InputStream;
 import java.util.UUID;
 
 
+@Service
+@Transactional
 public class FileServiceImpl implements FileService {
     /**
      * 文件上传
