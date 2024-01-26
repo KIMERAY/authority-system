@@ -7,6 +7,7 @@ import com.manong.entity.User;
 import com.manong.service.UserService;
 import com.manong.utils.Result;
 import com.manong.vo.query.UserQueryVo;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,6 +72,7 @@ public class UserController {
         }
         return Result.error().message("用户添加失败");
     }
+
     /**
      * 修改用户
      *
@@ -90,6 +92,21 @@ public class UserController {
             return Result.ok().message("用户修改成功");
         }
         return Result.error().message("用户修改失败");
+    }
+
+    /**
+     * 删除用户
+     *
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/delete/{id}")
+    public Result delete(@PathVariable Long id) {
+//调用删除用户信息的方法
+        if (userService.deleteById(id)) {
+            return Result.ok().message("用户删除成功");
+        }
+        return Result.error().message("用户删除失败");
     }
 }
 

@@ -22,4 +22,11 @@ public interface UserService extends IService<User> {
      * @return
      */
     IPage<User> findUserListByPage(IPage<User> page, UserQueryVo userQueryVo);
+
+    /**
+     * 根据Id删除用户
+     * @param userId
+     * @return
+     */
+    boolean deleteById(Long userId);
 }

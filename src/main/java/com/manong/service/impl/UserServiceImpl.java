@@ -4,17 +4,24 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.manong.entity.User;
 import com.manong.dao.UserMapper;
+import com.manong.service.FileService;
 import com.manong.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.manong.utils.SystemConstants;
 import com.manong.vo.query.UserQueryVo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import javax.annotation.Resource;
+
 
 @Service
 @Transactional
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+
+    @Resource
+    private FileService fileService;
 
     /**
      * 根据用户名查询用户信息
@@ -54,4 +61,30 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     }
+
+    /**
+     * 根据Id删除用户
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public boolean deleteById(Long userId) {
+//        根据用户ID查询用户信息
+        User user = baseMapper.selectById(userId);
+//        删除用户角色关系
+        baseMapper.deleteUserRole(userId);
+//        删除用户信息
+        if (baseMapper.deleteById(userId) > 0) {
+//            判断用户对象是否为空
+            if (user != null && !ObjectUtils.isEmpty(user.getAvatar()) && !user.getAvatar().equals(SystemConstants.DEFAULT_AVATAR)) {
+//                删除阿里云OSS中的文件
+                fileService.deleteFile(user.getAvatar());
+            }
+
+            return true;
+        }
+        return false;
+    }
+
 }
