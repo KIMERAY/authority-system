@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.manong.entity.Role;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.manong.vo.query.RoleQueryVo;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -41,4 +42,11 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     boolean saveRolePermission(Long roleId, List<Long> permissionIds);
+
+    /**
+     * 根据登录用户ID查询该用户拥有的角色列表
+     * @param userId
+     * @return
+     */
+    List<Long> findRoleIdByUserId(Long userId);
 }

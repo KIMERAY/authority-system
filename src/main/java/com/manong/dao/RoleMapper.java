@@ -35,4 +35,12 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @return
      */
     int saveRolePermission(Long roleId, List<Long> permissionIds);
+
+    /**
+     * 根据登录用户ID查询该用户拥有的角色列表
+     * @param userId
+     * @return
+     */
+    @Select("select role_id from sys_user_role where user_id=#{user_id}")
+    List<Long> findRoleIdByUserId(Long userId);
 }
