@@ -38,9 +38,10 @@ public interface RoleMapper extends BaseMapper<Role> {
 
     /**
      * 根据登录用户ID查询该用户拥有的角色列表
+     *
      * @param userId
      * @return
      */
-    @Select("select role_id from sys_user_role where user_id=#{user_id}")
+    @Select("select role_id from `sys_user_role` where user_id = #{userId}")
     List<Long> findRoleIdByUserId(Long userId);
 }

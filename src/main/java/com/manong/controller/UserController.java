@@ -3,15 +3,19 @@ package com.manong.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.manong.entity.Role;
 import com.manong.entity.User;
+import com.manong.service.RoleService;
 import com.manong.service.UserService;
 import com.manong.utils.Result;
+import com.manong.vo.query.RoleQueryVo;
 import com.manong.vo.query.UserQueryVo;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @RestController
@@ -19,6 +23,8 @@ import javax.annotation.Resource;
 public class UserController {
     @Resource
     private UserService userService;
+    @Resource
+    private RoleService roleService;
 
     @Resource
     private PasswordEncoder passwordEncoder;
@@ -107,6 +113,36 @@ public class UserController {
             return Result.ok().message("用户删除成功");
         }
         return Result.error().message("用户删除失败");
+    }
+
+    /**
+     * 获取分配角色列表
+     *
+     * @param roleQueryVo
+     * @return
+     */
+    @GetMapping("/getRoleListForAssign")
+    public Result getRoleListForAssign(RoleQueryVo roleQueryVo) {
+//        创建分页对象
+        IPage<Role> page = new Page<Role>(roleQueryVo.getPageNo(), roleQueryVo.getPageSize());
+//        调用查询角色列表的方法
+        roleService.findRoleListByUserId(page, roleQueryVo);
+//        返回数据
+        return Result.ok(page);
+    }
+
+    /**
+     * 根据用户ID查询该用户拥有的角色ID
+     *
+     * @param userId
+     * @return
+     */
+    @GetMapping("/getRoleByUserId/{userId}")
+    public Result getRoleByUserId(@PathVariable Long userId) {
+//        调用根据用户ID查询该用户拥有的角色ID的方法
+        List<Long> roleIds = roleService.findRoleIdByUserId(userId);
+//        返回数据
+        return Result.ok(roleIds);
     }
 }
 
