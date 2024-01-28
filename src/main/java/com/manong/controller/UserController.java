@@ -3,6 +3,7 @@ package com.manong.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.manong.dto.UserRoleDTO;
 import com.manong.entity.Role;
 import com.manong.entity.User;
 import com.manong.service.RoleService;
@@ -143,6 +144,21 @@ public class UserController {
         List<Long> roleIds = roleService.findRoleIdByUserId(userId);
 //        返回数据
         return Result.ok(roleIds);
+    }
+
+    /**
+     * 分配角色
+     *
+     * @return
+     */
+    @PostMapping("/saveUserRole")
+    public Result saveUserRole(@RequestBody UserRoleDTO userRoleDTO) {
+//        保存用户角色关系
+        if (userService.saveUserRole(userRoleDTO.getUserId(), userRoleDTO.getRoleIds())) {
+            return Result.ok().message("角色分配成功");
+        }
+        return Result.error().message("角色分配失败");
+
     }
 }
 

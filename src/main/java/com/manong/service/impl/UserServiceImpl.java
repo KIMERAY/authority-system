@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 @Service
@@ -86,5 +87,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         return false;
     }
+
+    @Override
+    public boolean saveUserRole(Long userId, List<Long> roleIds) {
+//        删除用户角色关系
+        baseMapper.deleteUserRole(userId);
+//        保存用户角色关系
+        return baseMapper.saveUserRole(userId, roleIds) > 0;
+
+    }
+
 
 }

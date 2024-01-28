@@ -5,6 +5,8 @@ import com.manong.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.manong.vo.query.UserQueryVo;
 
+import java.util.List;
+
 public interface UserService extends IService<User> {
 
 
@@ -29,4 +31,12 @@ public interface UserService extends IService<User> {
      * @return
      */
     boolean deleteById(Long userId);
+
+    /**
+     * 分配角色
+     * @param userId
+     * @param roleIds
+     * @return
+     */
+    boolean saveUserRole(Long userId, List<Long> roleIds);
 }
