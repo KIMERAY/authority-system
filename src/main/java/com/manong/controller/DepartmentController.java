@@ -6,6 +6,7 @@ import com.manong.entity.Department;
 import com.manong.service.DepartmentService;
 import com.manong.utils.Result;
 import com.manong.vo.query.DepartmentQueryVo;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -51,6 +52,7 @@ public class DepartmentController {
      * @param department
      * @return
      */
+    @PreAuthorize("hasAuthority('sys:department:add')")
     @PostMapping("/add")
     public Result add(@RequestBody Department department) {
         if (departmentService.save(department)) {
@@ -65,6 +67,7 @@ public class DepartmentController {
      * @param department
      * @return
      */
+    @PreAuthorize("hasAuthority('sys:department:edit')")
     @PutMapping("/update")
     public Result update(@RequestBody Department department) {
         if (departmentService.updateById(department)) {
@@ -79,6 +82,7 @@ public class DepartmentController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('sys:department:delete')")
     @GetMapping("/check/{id}")
     public Result check(@PathVariable Long id) {
 //        调用查询部门下是否存在子部门的方法
@@ -99,6 +103,7 @@ public class DepartmentController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAuthority('sys:department:delete')")
     @DeleteMapping("/delete/{id}")
     public Result delete(@PathVariable Long id) {
         if (departmentService.removeById(id)) {
